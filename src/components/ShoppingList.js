@@ -6,6 +6,7 @@ import Item from "./Item";
 function ShoppingList() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [items, setItems] = useState([]);
+  
 
   
   //Add useEffect hook:
@@ -14,6 +15,18 @@ function ShoppingList() {
     .then(response => response.json())
     .then(data => setItems(data))
   }, [])
+
+  //Add this callback function to update our items on the list:
+  function handleUpdateItem(updatedItem) {
+    const updatedItems = items.map((item) => {
+      if (item.id === updatedItem.id) {
+        return updatedItem;
+      } else {
+        return item;
+      }
+    });
+    setItems(updatedItems);
+  }
   
   //Add this funciton!
   function handleAddItem(newItem) {
@@ -40,8 +53,13 @@ function ShoppingList() {
         onCategoryChange={handleCategoryChange}
       />
       <ul className="Items">
+        {/* pass updatedItem as a prop to item */}
         {itemsToDisplay.map((item) => (
-          <Item key={item.id} item={item} />
+          <Item 
+            key={item.id} 
+            item={item} 
+            onUpdateItem={handleUpdateItem}
+          />
         ))}
       </ul>
     </div>
