@@ -7,17 +7,23 @@ function ShoppingList() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [items, setItems] = useState([]);
 
+  
+  //Add useEffect hook:
+  useEffect(() => {
+    fetch("http://localhost:4000/items")
+    .then(response => response.json())
+    .then(data => setItems(data))
+  }, [])
+  
+  //Add this funciton!
+  function handleAddItem(newItem) {
+    setItems([...items, newItem])
+  }
+  
+  
   function handleCategoryChange(category) {
     setSelectedCategory(category);
   }
-
-  //Add useEffect hook:
-    useEffect(() => {
-      fetch("http://localhost:4000/items")
-      .then(response => response.json())
-      .then(data => setItems(data))
-    }, [])
-
 
   const itemsToDisplay = items.filter((item) => {
     if (selectedCategory === "All") return true;
@@ -27,7 +33,8 @@ function ShoppingList() {
 
   return (
     <div className="ShoppingList">
-      <ItemForm />
+      {/* add the onAddItem prop! */}
+      <ItemForm onAddItem={handleAddItem}/>
       <Filter
         category={selectedCategory}
         onCategoryChange={handleCategoryChange}
