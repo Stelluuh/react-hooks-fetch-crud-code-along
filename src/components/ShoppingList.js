@@ -16,6 +16,12 @@ function ShoppingList() {
     .then(data => setItems(data))
   }, [])
 
+  //add this callback function to update the deleted item
+  function handleDeleteItem(deletedItem) {
+    const updatedItems = items.filter(item => item.id !== deletedItem.id);
+    setItems(updatedItems)
+  }
+
   //Add this callback function to update our items on the list:
   function handleUpdateItem(updatedItem) {
     const updatedItems = items.map((item) => {
@@ -59,6 +65,7 @@ function ShoppingList() {
             key={item.id} 
             item={item} 
             onUpdateItem={handleUpdateItem}
+            onDeleteItem={handleDeleteItem}
           />
         ))}
       </ul>
